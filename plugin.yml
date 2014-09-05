@@ -1,11 +1,6 @@
-name: Buycraft
-main: buycraft\BuyCraft;
+name: BuyCraft
+main: buycraft\BuyCraft
 version: 0.1
 author: Falk
-commands:
-   ec:
-      usage: /<command>
-   buycraft:
-      usage: /<command> <reload/forcecheck/secret/payments <ign>>
-   buysign:
-      usage: /<command> <begin/end/filter [Package ID]>
+api: [1.0.0]
+load: POSTWORLD

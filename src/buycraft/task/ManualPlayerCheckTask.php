@@ -5,8 +5,8 @@ use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
 use pocketmine\Player;
 
-class CommandDeleteTask extends ApiAsyncTask{
-    public function onConfig(BuyCraft $plugin){
+class ManualPlayerCheckTask extends ApiAsyncTask{
+    public function onConfig(BuyCraft $main){
 
     }
     public function onRun(){

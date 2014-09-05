@@ -13,6 +13,6 @@ class CommandExecuteTask extends ApiTask{
 
     }
     public function call(){
-        $this->getScheduler()->scheduleRepeatingTask($this, 20);
+        $this->getScheduler()->scheduleRepeatingTask($this, 5);
     }
 }

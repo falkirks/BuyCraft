@@ -1,10 +1,9 @@
 <?php
 namespace buycraft;
 
-use pocketmine\command\CommandExecutor;
 use pocketmine\plugin\PluginBase;
 
-class BuyCraft extends PluginBase implements CommandExecutor{
+class BuyCraft extends PluginBase{
     public function onEnable(){
         $this->saveDefaultConfig();
         $this->saveResource("README.md");

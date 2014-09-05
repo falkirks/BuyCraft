@@ -1,7 +1,9 @@
 <?php
 namespace buycraft\api;
 use buycraft\BuyCraft;
+use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
+use pocketmine\utils\Utils;
 
 /**
  * Class ApiTask
@@ -9,21 +11,35 @@ use pocketmine\scheduler\PluginTask;
  */
 abstract class ApiTask extends PluginTask{
     /**
-     * @param BuyCraft $plugin
+     * @param BuyCraft $main
+     * @param Player $manual
      * @param array $data
      */
-    public function __construct(BuyCraft $plugin, $data = []){
-        parent::__construct($plugin);
-        $this->data = serialize($data);
+    public function __construct(BuyCraft $main, $data = []){
+        parent::__construct($main);
+        if($main->getConfig()["https"]){
+            $this->apiUrl = "https://api.buycraft.net/v4";
+        }
+        else{
+            $this->apiUrl = "http://api.buycraft.net/v4";
+        }
+        $this->data = $data;
     }
 
     /**
      * @return array
      */
     public function getData(){
-        return unserialize($this->data);
+        return $this->data;
     }
-
+    /**
+     * @return mixed
+     */
+    public function send(){
+        $data["secret"] = $this->getOwner()->getConfig()["secret"];
+        $data["playersOnline"] = count($this->getOwner()->getServer()->getOnlinePlayers());
+        return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())));
+    }
     /**
      * @return \pocketmine\scheduler\ServerScheduler
      */
