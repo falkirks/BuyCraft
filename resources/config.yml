@@ -1,0 +1,80 @@
+#  ____               _____            __ _
+# |  _ \             / ____|          / _| |
+# | |_) |_   _ _   _| |     _ __ __ _| |_| |_
+# |  _ <| | | | | | | |    | '__/ _` |  _| __|
+# | |_) | |_| | |_| | |____| | | (_| | | | |_
+# |____/ \__,_|\__, |\_____|_|  \__,_|_|  \__|
+#               __/ |
+#              |___/
+
+# Secret provided by buycraft.net
+secret: false
+
+# Not Supported
+autoUpdate: false
+
+# Enable command checking
+commandChecker: true
+
+# Use HTTPS for connections
+https: false
+
+# Disable usage of /buy
+disableBuyCommand: false
+
+# Not Suppported
+useBuyGUI: false
+directPay: false
+
+# Not YET Supported
+buyCommand: buy
+
+# Not Supported
+headsEnabled: false
+headsCurrency: false
+buysignsRemoveFreePrice: false
+
+# Not Supported (Just boost the debug level)
+debug: false
+
+# Not YET Supported
+commandThrottleCount: 150
+
+# Prevent setting of secret
+disable-secret-command: false
+
+#  _
+# | |
+# | |     __ _ _ __   __ _
+# | |    / _` | '_ \ / _` |
+# | |___| (_| | | | | (_| |
+# |______\__,_|_| |_|\__, |
+#                     __/ |
+#                    |___/
+# Not all of these are currently used
+
+invalidBuyCommand: "Please enter the correct command parameters."
+urlError: "Failed to generate the shortened URL."
+chatEnabled: "Your chat is now enabled."
+chatAlreadyEnabled: "Your chat is already enabled."
+"commandsExecuted": "Your purchased packages have been credited."
+pleaseVisit: "Please click the link below to continue"
+turnChatBackOn: "Type /ec to turn your chat back on."
+packageNotFound: "Package not found."
+noPackagesForSale: "We currently do not have any packages for sale."
+toPurchase: "To purchase a package, please type"
+howToNavigate: "Browse through our packages by using"
+packageId: "ID"
+packageName: "Name"
+packagePrice: "Price"
+pageNotFound: "Page not found."
+categoryMenu: "Category Menu"
+inventoryMenuPrefix: "Buycraft"
+chooseACategory: "Choose a category"
+category: "Category"
+inventoryMenuNotReady: "The inventory menu has not been loaded yet. Please wait."
+nextPage: "Next Page"
+previousPage: "Previous Page"
+homePage: "Back to categories"
+commandExecuteNotEnoughFreeInventory: "%d free inventory slot(s) are required."
+commandExecuteNotEnoughFreeInventory2: "Please empty your inventory to receive these items."
