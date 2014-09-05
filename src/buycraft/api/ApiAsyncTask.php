@@ -52,7 +52,7 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @return mixed
      */
     public function send(){
-        return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())));
+        return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true);
     }
     /**
      * @return \pocketmine\scheduler\ServerScheduler
@@ -73,7 +73,6 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @return mixed
      */
     abstract public function onOutput(BuyCraft $main, Player $p = null);
-
     /**
      * @param BuyCraft $main
      * @return mixed

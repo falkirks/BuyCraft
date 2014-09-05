@@ -7,6 +7,7 @@ use buycraft\BuyCraft;
 use pocketmine\Player;
 
 class AuthenticateTask extends ApiAsyncTask{
+    private $output;
     public function onConfig(BuyCraft $main){
         $data = $this->getData();
         $data["action"] = Actions::AUTHENTICATE;
@@ -20,6 +21,11 @@ class AuthenticateTask extends ApiAsyncTask{
         $this->output = $this->send();
     }
     public function onOutput(BuyCraft $main, Player $player = null){
-        //Send output back to plugin
+        if($this->output["code"] === 0){
+            $main->getLogger()->info("Connected to BuyCraft!");
+        }
+        elseif($this->output === 101){
+            $main->getLogger()->critical("The specified Secret key could not be found.");
+        }
     }
 }
