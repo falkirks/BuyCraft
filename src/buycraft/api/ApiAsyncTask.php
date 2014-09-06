@@ -12,6 +12,10 @@ use pocketmine\utils\Utils;
  */
 abstract class ApiAsyncTask extends AsyncTask{
     /**
+     * @var
+     */
+    private $output;
+    /**
      * @param BuyCraft $main
      * @param array $data
      * @param bool $player
@@ -37,22 +41,26 @@ abstract class ApiAsyncTask extends AsyncTask{
     }
 
     /**
+     * @return mixed
+     */
+    public function getOutput(){
+        return unserialize($this->output);
+    }
+
+    /**
      * @param array $data
      */
     public function setData(array $data){
         $this->data = serialize($data);
     }
-    /**
-     * @return mixed
-     */
     /*
      * This function is called from a task and can't interact with the API.
      */
     /**
-     * @return mixed
+     *
      */
     public function send(){
-        return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true);
+        $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true));
     }
     /**
      * @return \pocketmine\scheduler\ServerScheduler

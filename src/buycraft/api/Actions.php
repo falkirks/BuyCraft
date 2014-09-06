@@ -12,6 +12,6 @@ class Actions{
     const PAYMENTS = "payments";
     const PENDING_PLAYERS = "pendingUsers";
     const COMMANDS = "commands";
-        const LOOKUP = "lookup";
-        const REMOVE = "removeId";
+        const DO_LOOKUP = "lookup";
+        const DO_REMOVE = "removeId";
 }

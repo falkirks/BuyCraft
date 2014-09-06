@@ -3,7 +3,7 @@ namespace buycraft\task;
 
 
 /*
- * Thread used for polling BuyCraft API
+ * Checks buycraft.net for new commands. 
  */
 
 use buycraft\api\ApiTask;
