@@ -23,9 +23,16 @@ class AuthenticateTask extends ApiAsyncTask{
         $out = $this->getOutput(); //Limit unserialize() calls
         if($out["code"] === 0){
             $main->getLogger()->info("Connected to BuyCraft!");
+            $main->setAuthenticated();
+            $main->setAuthPayload($out["payload"]);
         }
         elseif($out["code"] === 101){
             $main->getLogger()->critical("The specified Secret key could not be found.");
+            $main->setUnAuthenticated();
+        }
+        else{
+            $main->getLogger()->critical("An error occured during authentication.");
+            $main->setUnAuthenticated();
         }
     }
 }

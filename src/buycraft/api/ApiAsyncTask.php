@@ -31,6 +31,7 @@ abstract class ApiAsyncTask extends AsyncTask{
         $data["playersOnline"] = count($main->getServer()->getOnlinePlayers());
         $this->data = serialize($data);
         $this->player = $player;
+        $this->isAuthenticated = $main->isAuthenticated();
         $this->onConfig($main);
     }
     /**
@@ -60,7 +61,12 @@ abstract class ApiAsyncTask extends AsyncTask{
      *
      */
     public function send(){
-        $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true));
+        if($this->isAuthenticated){
+            $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true));
+        }
+        else{
+            $this->output = false;
+        }
     }
     /**
      * @return \pocketmine\scheduler\ServerScheduler
@@ -75,9 +81,9 @@ abstract class ApiAsyncTask extends AsyncTask{
     public function call(){
         $this->getScheduler()->scheduleAsyncTask($this);
     }
-
     /**
      * @param BuyCraft $main
+     * @param Player $p
      * @return mixed
      */
     abstract public function onOutput(BuyCraft $main, Player $p = null);

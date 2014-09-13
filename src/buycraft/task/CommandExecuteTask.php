@@ -3,7 +3,7 @@ namespace buycraft\task;
 
 
 /*
- * Checks buycraft.net for new commands. 
+ * Checks buycraft.net for new commands.
  */
 
 use buycraft\api\ApiTask;
@@ -13,6 +13,6 @@ class CommandExecuteTask extends ApiTask{
 
     }
     public function call(){
-        $this->getScheduler()->scheduleRepeatingTask($this, 5);
+        $this->getScheduler()->scheduleRepeatingTask($this, 10);
     }
 }
