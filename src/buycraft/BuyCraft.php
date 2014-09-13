@@ -1,6 +1,8 @@
 <?php
 namespace buycraft;
 
+use buycraft\commands\BuyCommand;
+use buycraft\commands\BuyCraftCommand;
 use buycraft\task\AuthenticateTask;
 use buycraft\task\CommandDeleteTask;
 use buycraft\task\CommandExecuteTask;
@@ -20,6 +22,7 @@ class BuyCraft extends PluginBase{
         $this->saveDefaultConfig();
         $this->saveResource("README.md");
         $this->getConfig(); //Fetch the config so no blocking later
+
         if($this->getConfig()->get('secret') !== ""){
             $auth = new AuthenticateTask($this);
             $auth->call();
@@ -27,12 +30,19 @@ class BuyCraft extends PluginBase{
         else{
             $this->getLogger()->info("You still need to configure BuyCraft. Use /buycraft secret or the config.yml to set your secret.");
         }
+
         $this->commandExecuteTask = new CommandExecuteTask($this);
         $this->pendingPlayerCheckerTask = new PendingPlayerCheckerTask($this);
         $this->commandDeleteTask = new CommandDeleteTask($this);
         $this->commandExecuteTask->call();
         $this->pendingPlayerCheckerTask->call();
         $this->commandDeleteTask->call();
+
+        $this->getServer()->getCommandMap()->register("buycraft", new BuyCraftCommand($this));
+        $this->getServer()->getCommandMap()->register("buycraft", new BuyCommand($this));
+    }
+    public function onDisable(){
+        $this->commandDeleteTask->onRun(0);
     }
     /**
      * @return CommandDeleteTask

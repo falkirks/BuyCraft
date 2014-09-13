@@ -4,3 +4,12 @@ version: 0.1
 author: Falk
 api: [1.0.0]
 load: POSTWORLD
+permissions:
+ buycraft:
+  default: op
+  description: Top level BuyCraft permission
+  children:
+   buycraft.admin:
+    default: op
+   buycraft.buy:
+    default: true
