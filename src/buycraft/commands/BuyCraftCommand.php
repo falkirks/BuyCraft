@@ -13,7 +13,12 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
         $this->main = $main;
     }
     public function execute(CommandSender $sender, $label, array $args){
+        if(isset($args[0])){
 
+        }
+        else{
+
+        }
     }
     public function getPlugin(){
         return $this->main;

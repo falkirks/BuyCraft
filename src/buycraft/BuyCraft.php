@@ -17,6 +17,11 @@ class BuyCraft extends PluginBase{
     private $pendingPlayerCheckerTask;
     /** @var  CommandDeleteTask */
     private $commandDeleteTask;
+    /** @var BuyCraftCommand */
+    private $buycraftCommand;
+    /** @var  BuyCommand */
+    private $buyCommand;
+    /** @var array  */
     private $authPayload = [];
     public function onEnable(){
         $this->saveDefaultConfig();
@@ -38,8 +43,10 @@ class BuyCraft extends PluginBase{
         $this->pendingPlayerCheckerTask->call();
         $this->commandDeleteTask->call();
 
-        $this->getServer()->getCommandMap()->register("buycraft", new BuyCraftCommand($this));
-        $this->getServer()->getCommandMap()->register("buycraft", new BuyCommand($this));
+        $this->buyCommand = new BuyCommand($this);
+        $this->buycraftCommand = new BuyCraftCommand($this);
+        $this->getServer()->getCommandMap()->register("buycraft", $this->buycraftCommand);
+        $this->getServer()->getCommandMap()->register("buycraft", $this->buyCommand);
     }
     public function onDisable(){
         $this->commandDeleteTask->onRun(0);
@@ -64,6 +71,19 @@ class BuyCraft extends PluginBase{
     public function getPendingPlayerCheckerTask(){
         return $this->pendingPlayerCheckerTask;
     }
+    /**
+     * @return BuyCommand
+     */
+    public function getBuyCommand(){
+        return $this->buyCommand;
+    }
+
+    /**
+     * @return BuyCraftCommand
+     */
+    public function getBuycraftCommand(){
+        return $this->buycraftCommand;
+    }
 
     /**
      * @return bool
@@ -78,6 +98,9 @@ class BuyCraft extends PluginBase{
         $this->isAuthenticated = false;
     }
     public function setAuthPayload(array $authPayload){
+        if(isset($authPayload["buyCommand"])){
+            $this->buyCommand->updateCommand($authPayload["buyCommand"]);
+        }
         $this->authPayload = $authPayload;
     }
     public function getAuthPayload(){
