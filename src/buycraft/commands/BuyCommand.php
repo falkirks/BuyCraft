@@ -13,7 +13,13 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
         $this->main = $main;
     }
     public function execute(CommandSender $sender, $label, array $args){
+        if(!$this->getPlugin()->getConfig()->get('disableBuyCommand')){
 
+        }
+        else{
+            $sender->sendMessage("Buy command is disabled on this server.");
+            return true;
+        }
     }
     public function getPlugin(){
         return $this->main;

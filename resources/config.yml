@@ -37,7 +37,7 @@ buysignsRemoveFreePrice: false
 # Not Supported (Just boost the debug level)
 debug: false
 
-# Not YET Supported
+# Max commands to pull from API
 commandThrottleCount: 150
 
 # Prevent setting of secret
