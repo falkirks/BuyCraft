@@ -9,37 +9,20 @@
 
 # Secret provided by buycraft.net
 secret: ""
-
 # Not Supported
 autoUpdate: false
-
 # Enable command checking
 commandChecker: true
-
 # Use HTTPS for connections
 https: false
-
 # Disable usage of /buy
 disableBuyCommand: false
-
-# Not Suppported
-useBuyGUI: false
-directPay: false
-
 # Change command for /buy
 buyCommand: buy
-
-# Not Supported
-headsEnabled: false
-headsCurrency: false
-buysignsRemoveFreePrice: false
-
 # Not Supported (Just boost the debug level)
 debug: false
-
 # Max commands to pull from API
 commandThrottleCount: 150
-
 # Prevent setting of secret
 disable-secret-command: false
 
