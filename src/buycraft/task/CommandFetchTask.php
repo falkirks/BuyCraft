@@ -17,6 +17,8 @@ class CommandFetchTask extends ApiAsyncTask{
         if(is_array($data["users"])){
             $data["users"] = json_encode($data["users"]); //I think that's right
         }
+        $data["offlineCommandLimit"] = $plugin->getConfig()->get('commandThrottleCount');
+        $this->setData($data);
     }
     public function onRun(){
         $this->send();
