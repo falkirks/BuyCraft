@@ -1,20 +1,32 @@
 <?php
 namespace buycraft\task;
 
+use buycraft\api\Actions;
 use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
+use buycraft\util\PackageCommand;
 use pocketmine\Player;
 /*
- * Fetches info about a command using the cid
+ * Fetches commands from buycraft and adds them to the execution queue.
  */
 class CommandFetchTask extends ApiAsyncTask{
     public function onConfig(BuyCraft $plugin){
-
+        $data = $this->getData();
+        $data["action"] = Actions::COMMANDS;
+        $data["do"] = Actions::DO_LOOKUP;
+        if(is_array($data["users"])){
+            $data["users"] = json_encode($data["users"]); //I think that's right
+        }
     }
     public function onRun(){
-
+        $this->send();
     }
     public function onOutput(BuyCraft $main, Player $player = null){
-
+        foreach($this->getOutput()["payload"]["commands"] as $cmd){
+            $p = ($cmd["requireOnline"] ? $main->getServer()->getPlayer($cmd["ign"]) : null);
+            if(!$cmd["requireOnline"] || $p !== null){
+                $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
+            }
+        }
     }
 }

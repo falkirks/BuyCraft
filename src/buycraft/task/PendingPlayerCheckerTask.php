@@ -6,7 +6,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 
 /*
- * Looks for players with commands pending. (I think?)
+ * Looks for players with commands pending, f
  */
 class PendingPlayerCheckerTask extends ApiTask implements Listener{
     private $pendingPlayers = [];
