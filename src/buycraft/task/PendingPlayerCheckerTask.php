@@ -1,6 +1,7 @@
 <?php
 namespace buycraft\task;
 
+use buycraft\api\Actions;
 use buycraft\api\ApiTask;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -12,7 +13,24 @@ class PendingPlayerCheckerTask extends ApiTask implements Listener{
     private $pendingPlayers = [];
     public function onRun($tick, $manual = false){
         if($this->getOwner()->getConfig()->get('commandChecker') || $manual){
-
+            $this->data["action"] = Actions::PENDING_PLAYERS;
+            $res = $this->send();
+            if($res !== false){
+                $playersToFetch = [];
+                foreach($res["payload"]["pendingPlayers"] as $player){
+                    $p = $this->getOwner()->getServer()->getPlayerExact($player);
+                    if($p !== null && $p->isOnline()){
+                        $playersToFetch[] = $p->getName();
+                    }
+                    else{
+                        $this->pendingPlayers[] = $p->getName();
+                    }
+                }
+                if($res["payload"]["offlineCommands"] || count($playersToFetch) > 0){
+                    $fetch = new CommandFetchTask($this->getOwner(), ["users" => $playersToFetch, "offlineCommands" => $res["payload"]["offlineCommands"]]);
+                    $fetch->call();
+                }
+            }
         }
     }
     public function call(){
