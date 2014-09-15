@@ -23,6 +23,9 @@ class AuthenticateTask extends ApiAsyncTask{
         $out = $this->getOutput(); //Limit unserialize() calls
         if($out["code"] === 0){
             $main->getLogger()->info("Connected to BuyCraft!");
+            if($player instanceof Player){
+                $player->sendMessage("BuyCraft authentication complete.");
+            }
             $main->setAuthenticated();
             $main->setAuthPayload($out["payload"]);
         }
