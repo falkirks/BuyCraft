@@ -67,7 +67,7 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                         return true;
                         break;
                     case 'report':
-                        $sender->sendMessage("BuyCraft for PocketMine does not support report generation.");
+                        $sender->sendMessage("BuyCraft for PocketMine does not support report generation. If the plugin crashes just alert me on GitHub or the PocketMine forums with a link to the crash report.");
                         return true;
                         break;
                 }

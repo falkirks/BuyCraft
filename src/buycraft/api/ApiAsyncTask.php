@@ -99,7 +99,7 @@ abstract class ApiAsyncTask extends AsyncTask{
         $plugin = $server->getPluginManager()->getPlugin("BuyCraft");
         if($plugin != null && $plugin->isEnabled() && $plugin instanceof BuyCraft){
             if($this->player !== false){
-                $player = $server->getPlayer($this->player);
+                $player = $server->getPlayerExact($this->player);
                 if($player !== null && $player->isOnline()){
                     $this->onOutput($plugin, $player);
                 }

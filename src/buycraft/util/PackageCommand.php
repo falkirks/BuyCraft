@@ -18,10 +18,13 @@ class PackageCommand{
     public function getDelay(){
         return $this->data["delay"];
     }
-    public function getRequiredInventorySlot(){
+    public function getRequiredInventorySlots(){
         return $this->data["requireInventorySlot"];
     }
     public function getReplacedCommand(){
         return str_replace("{name}", $this->getUser(), $this->getCommand());
+    }
+    public function requiresInventorySlots(){
+        return $this->data["requireInventorySlot"] > 0;
     }
 }
