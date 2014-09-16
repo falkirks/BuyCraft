@@ -26,8 +26,11 @@ class CommandFetchTask extends ApiAsyncTask{
     public function onOutput(BuyCraft $main, Player $player = null){
         foreach($this->getOutput()["payload"]["commands"] as $cmd){
             $p = ($cmd["requireOnline"] ? $main->getServer()->getPlayer($cmd["ign"]) : null);
-            if(!$cmd["requireOnline"] || $p !== null){
-                $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
+            $pkg = new PackageCommand($cmd);
+            if(!$main->getCommandDeleteTask()->isQueued($pkg->getCommandID())){
+                if(!$cmd["requireOnline"] || $p !== null){
+                    $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
+                }
             }
         }
     }

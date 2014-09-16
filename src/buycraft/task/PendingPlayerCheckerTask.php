@@ -35,7 +35,7 @@ class PendingPlayerCheckerTask extends ApiTask implements Listener{
     }
     public function call(){
         $this->getOwner()->getServer()->getPluginManager()->registerEvents($this, $this->getOwner());
-        $this->getScheduler()->scheduleRepeatingTask($this, 20);
+        $this->getScheduler()->scheduleRepeatingTask($this, 40);
     }
     public function onPlayerJoin(PlayerJoinEvent $event){
         if(isset($this->pendingPlayers[$event->getPlayer()->getName()])){

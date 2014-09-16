@@ -23,7 +23,7 @@ class CommandDeleteTask extends ApiTask{
     public function call(){
         $this->data["action"] = Actions::COMMANDS;
         $this->data["do"] = Actions::DO_REMOVE;
-        $this->getScheduler()->scheduleRepeatingTask($this, 20*20);
+        $this->getScheduler()->scheduleRepeatingTask($this, 20);
     }
     public function isQueued($cid){
         return in_array($cid, $this->deleteQueue);

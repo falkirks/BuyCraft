@@ -57,7 +57,7 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                         }
                         break;
                     case 'payments':
-                        $recentPaymentTask = new RecentPaymentsTask($this->getPlugin(), (isset($args[1]) ? ["ign" => $args[1]] : []), ($sender instanceof Player ? $sender : false));
+                        $recentPaymentTask = new RecentPaymentsTask($this->getPlugin(), (isset($args[1]) ? ["ign" => $args[1]] : []), ($sender instanceof Player ? $sender->getName() : false));
                         $recentPaymentTask->call();
                         break;
                     case 'report':

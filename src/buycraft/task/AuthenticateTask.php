@@ -11,7 +11,7 @@ class AuthenticateTask extends ApiAsyncTask{
         $data = $this->getData();
         $data["action"] = Actions::AUTHENTICATE;
         $data["serverPort"] = $main->getServer()->getPort();
-        $data["onlineMode"] = true; //Not supported?
+        $data["onlineMode"] = false; //Not supported?
         $data["playersMax"] = $main->getServer()->getMaxPlayers();
         $data["version"] = Actions::PLUGIN_VERSION;
         $this->setData($data);
