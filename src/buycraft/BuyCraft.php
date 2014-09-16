@@ -7,6 +7,7 @@ use buycraft\task\AuthenticateTask;
 use buycraft\task\CommandDeleteTask;
 use buycraft\task\CommandExecuteTask;
 use buycraft\task\PendingPlayerCheckerTask;
+use buycraft\util\BuycraftCommandSender;
 use pocketmine\plugin\PluginBase;
 
 class BuyCraft extends PluginBase{
@@ -21,6 +22,8 @@ class BuyCraft extends PluginBase{
     private $buycraftCommand;
     /** @var  BuyCommand */
     private $buyCommand;
+    /** @var  BuycraftCommandSender */
+    private $commandSender;
     /** @var array  */
     private $authPayload = [];
     public function onEnable(){
@@ -35,7 +38,7 @@ class BuyCraft extends PluginBase{
         else{
             $this->getLogger()->info("You still need to configure BuyCraft. Use /buycraft secret or the config.yml to set your secret.");
         }
-
+        $this->commandSender = new BuycraftCommandSender;
         $this->commandExecuteTask = new CommandExecuteTask($this);
         $this->pendingPlayerCheckerTask = new PendingPlayerCheckerTask($this);
         $this->commandDeleteTask = new CommandDeleteTask($this);
@@ -85,6 +88,12 @@ class BuyCraft extends PluginBase{
         return $this->buycraftCommand;
     }
 
+    /**
+     * @return BuycraftCommandSender
+     */
+    public function getCommandSender(){
+        return $this->commandSender;
+    }
     /**
      * @return bool
      */

@@ -10,7 +10,6 @@ namespace buycraft\task;
 
 use buycraft\api\ApiTask;
 use buycraft\util\PackageCommand;
-use pocketmine\command\ConsoleCommandSender;
 
 class CommandExecuteTask extends ApiTask{
     /** @var PackageCommand[] */
@@ -26,7 +25,7 @@ class CommandExecuteTask extends ApiTask{
                     //TODO calculate inventory stuff
                 }
                 else{
-                    $this->getOwner()->getServer()->dispatchCommand(new ConsoleCommandSender(), $command->getReplacedCommand());
+                    $this->getOwner()->getServer()->dispatchCommand($this->getOwner()->getCommandSender(), $command->getReplacedCommand());
                     $this->getOwner()->getCommandDeleteTask()->deleteCommand($command->getCommandID());
                     $this->creditedCommands[] = $command;
                 }
