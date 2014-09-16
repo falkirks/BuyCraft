@@ -12,7 +12,7 @@ use buycraft\api\Actions;
 use buycraft\api\ApiTask;
 
 class CommandDeleteTask extends ApiTask{
-    private $deleteQueue;
+    private $deleteQueue = [];
     public function onRun($tick){
         if(count($this->deleteQueue) > 0){
             $this->data["commands"] = json_encode($this->deleteQueue);

@@ -17,13 +17,14 @@ class PendingPlayerCheckerTask extends ApiTask implements Listener{
             $res = $this->send();
             if($res !== false){
                 $playersToFetch = [];
+                var_dump($res["payload"]);
                 foreach($res["payload"]["pendingPlayers"] as $player){
                     $p = $this->getOwner()->getServer()->getPlayerExact($player);
                     if($p !== null && $p->isOnline()){
                         $playersToFetch[] = $p->getName();
                     }
                     else{
-                        $this->pendingPlayers[] = $p->getName();
+                        $this->pendingPlayers[] = $player;
                     }
                 }
                 if($res["payload"]["offlineCommands"] || count($playersToFetch) > 0){
