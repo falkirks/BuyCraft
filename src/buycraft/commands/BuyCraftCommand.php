@@ -1,6 +1,7 @@
 <?php
 namespace buycraft\commands;
 
+use buycraft\api\Actions;
 use buycraft\BuyCraft;
 use buycraft\task\AuthenticateTask;
 use buycraft\task\RecentPaymentsTask;
@@ -24,11 +25,9 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                             $sender->sendMessage("Scheduled authentication. If you don't receive a success message an error will be available on the console.");
                             $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
                             $auth->call();
-                            return true;
                         }
                         else{
                             $sender->sendMessage("Not authenticated with BuyCraft.net.");
-                            return true;
                         }
                         break;
                     case 'forcecheck':
@@ -38,7 +37,6 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                         }
                         else{
                             $sender->sendMessage("Not authenticated with BuyCraft.net.");
-                            return true;
                         }
                         break;
                     case 'secret':
@@ -49,36 +47,33 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                                 $sender->sendMessage("Scheduled authentication. If you don't receive a success message an error will be available on the console.");
                                 $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
                                 $auth->call();
-                                return true;
                             }
                             else{
                                 $sender->sendMessage("You must specify the secret to set.");
-                                return true;
                             }
                         }
                         else{
                             $sender->sendMessage("Setting secret in game has been disabled.");
-                            return true;
                         }
                         break;
                     case 'payments':
                         $recentPaymentTask = new RecentPaymentsTask($this->getPlugin(), (isset($args[1]) ? ["ign" => $args[1]] : []), ($sender instanceof Player ? $sender : false));
                         $recentPaymentTask->call();
-                        return true;
                         break;
                     case 'report':
                         $sender->sendMessage("BuyCraft for PocketMine does not support report generation. If the plugin crashes just alert me on GitHub or the PocketMine forums with a link to the crash report.");
-                        return true;
+                        break;
+                    default:
+                        $sender->sendMessage($this->getUsage());
                         break;
                 }
             }
             else{
                 $sender->sendMessage("You don't has permission to use that command.");
-                return true;
             }
         }
         else{
-
+            $sender->sendMessage("Running PocketMine translation of BuyCraft: " . Actions::PLUGIN_VERSION);
         }
     }
     public function getPlugin(){

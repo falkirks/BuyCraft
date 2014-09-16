@@ -17,7 +17,7 @@ abstract class ApiTask extends PluginTask{
      */
     public function __construct(BuyCraft $main, $data = []){
         parent::__construct($main);
-        if($main->getConfig()["https"]){
+        if($main->getConfig()->get("https")){
             $this->apiUrl = "https://api.buycraft.net/v4";
         }
         else{
