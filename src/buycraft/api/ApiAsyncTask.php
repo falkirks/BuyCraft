@@ -61,8 +61,9 @@ abstract class ApiAsyncTask extends AsyncTask{
      *
      */
     public function send(){
-        if($this->isAuthenticated){
-            $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true));
+        $data = $this->getData();
+        if($this->isAuthenticated || $data["action"] === Actions::AUTHENTICATE){
+            $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($data)), true));
         }
         else{
             $this->output = false;

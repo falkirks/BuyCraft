@@ -37,9 +37,9 @@ abstract class ApiTask extends PluginTask{
      */
     public function send(){
         if($this->getOwner()->isAuthenticated()){
-            $this->data["secret"] = $this->getOwner()->getConfig()["secret"];
+            $this->data["secret"] = $this->getOwner()->getConfig()->get('secret');
             $this->data["playersOnline"] = count($this->getOwner()->getServer()->getOnlinePlayers());
-            return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())));
+            return json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($this->getData())), true);
         }
         else{
             return false;
