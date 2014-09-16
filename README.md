@@ -1,6 +1,7 @@
 BuyCraft (port for PocketMine-MP)
 ===========
-This port includes all the functionality from BuyCraft for bukkit (excluding signs and GUI). The /buy command is not currently implemented but will be finished at a later date. Please keep in mind that players will need a PC account in order to buy packages.
+This port includes all the functionality from BuyCraft for bukkit (excluding signs and GUI). The /buy command is not currently implemented but will be finished at a later date. Also, commands that require inventory space won't execute. This will be added soon.
+
 
 ###BuyCraft TOS Compliance
 > The API located at http://api.buycraft.net may be used for any purpose other than websites who are in competition with the services we provide.
