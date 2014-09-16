@@ -10,6 +10,7 @@ namespace buycraft\task;
 
 use buycraft\api\ApiTask;
 use buycraft\util\PackageCommand;
+use pocketmine\item\Block;
 
 class CommandExecuteTask extends ApiTask{
     /** @var PackageCommand[] */
@@ -22,13 +23,14 @@ class CommandExecuteTask extends ApiTask{
         if(count($this->commandQueue) > 0){
             foreach($this->commandQueue as $command){
                 if($command->requiresInventorySlots()){
-                    //TODO calculate inventory stuff
+                    if($command->getRequiredInventorySlots($this->getOwner()->getServer()->getPlayerExact($command->getUser())) > 0){
+                        $this->needsInventorySpace[] = $command;
+                        continue;
+                    }
                 }
-                else{
-                    $this->getOwner()->getServer()->dispatchCommand($this->getOwner()->getCommandSender(), $command->getReplacedCommand());
-                    $this->getOwner()->getCommandDeleteTask()->deleteCommand($command->getCommandID());
-                    $this->creditedCommands[] = $command;
-                }
+                $this->getOwner()->getServer()->dispatchCommand($this->getOwner()->getCommandSender(), $command->getReplacedCommand());
+                $this->getOwner()->getCommandDeleteTask()->deleteCommand($command->getCommandID());
+                $this->creditedCommands[] = $command;
             }
             $this->commandQueue = [];
         }
@@ -43,7 +45,7 @@ class CommandExecuteTask extends ApiTask{
             foreach($this->needsInventorySpace as $i => $command){
                 $p = $this->getOwner()->getServer()->getPlayerExact($command->getUser());
                 if($p !== null && $p->isOnline()){
-                    $p->sendMessage(sprintf($this->getOwner()->getConfig()->get('commandExecuteNotEnoughFreeInventory'), $command->getRequiredInventorySlots())); //Not sure if that is right
+                    $p->sendMessage(sprintf($this->getOwner()->getConfig()->get('commandExecuteNotEnoughFreeInventory'), $command->getRequiredInventorySlots($p))); //Not sure if that is right
                     $p->sendMessage($this->getOwner()->getConfig()->get('commandExecuteNotEnoughFreeInventory2'));
                     unset($this->needsInventorySpace[$i]);
                 }
@@ -61,5 +63,8 @@ class CommandExecuteTask extends ApiTask{
         else{
             return false;
         }
+    }
+    public function isQueued(PackageCommand $command){
+        return in_array($command, $this->commandQueue);
     }
 }

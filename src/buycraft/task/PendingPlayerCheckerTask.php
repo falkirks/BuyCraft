@@ -15,7 +15,7 @@ class PendingPlayerCheckerTask extends ApiTask implements Listener{
         if($this->getOwner()->getConfig()->get('commandChecker') || $manual){
             $this->data["action"] = Actions::PENDING_PLAYERS;
             $res = $this->send();
-            if($res !== false){
+            if($res !== false && is_array($res["payload"]["pendingPlayers"])){
                 $playersToFetch = [];
                 foreach($res["payload"]["pendingPlayers"] as $player){
                     $p = $this->getOwner()->getServer()->getPlayerExact($player);
