@@ -1,7 +1,6 @@
 BuyCraft (port for PocketMine-MP)
 ===========
-
-This is full featured BuyCraft server plugin port. When it is done you will be able to use BuyCraft from a PocketMine server. All features in BuyCraft will be available in the port (provided they are doable in MCPE).
+This port includes all the functionality from BuyCraft for bukkit (excluding signs and GUI). The /buy command is not currently implemented but will be finished at a later date. Please keep in mind that players will need a PC account in order to buy packages.
 
 ###BuyCraft TOS Compliance
 > The API located at http://api.buycraft.net may be used for any purpose other than websites who are in competition with the services we provide.
