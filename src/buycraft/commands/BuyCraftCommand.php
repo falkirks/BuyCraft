@@ -73,7 +73,30 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
             }
         }
         else{
-            $sender->sendMessage("Running PocketMine translation of BuyCraft: " . Actions::PLUGIN_VERSION);
+            if($this->getPlugin()->isAuthenticated()){
+                $buyCommand = "/" . $this->getPlugin()->getBuyCommand()->getMainAlias() . " ";
+                $sender->sendMessage($buyCommand . ": View packages available for sale.");
+                $sender->sendMessage($buyCommand . "page <ID> : Navigate through package pages");
+                $sender->sendMessage($buyCommand . "<ID> : Purchase a specific package");
+                if($sender->hasPermission('buycraft.admin')){
+                    $sender->sendMessage("/buycraft reload : Reload the package cache");
+                    $sender->sendMessage("/buycraft forcecheck : Check for pending commands");
+                    if(!$this->getPlugin()->getConfig()->get('disable-secret-command')){
+                        $sender->sendMessage("/buycraft secret <key> : Set the secret");
+                    }
+                    $sender->sendMessage("/buycraft payments [ign] : Get recent payments");
+                    $sender->sendMessage("/buycraft report :  Gives instructions to report errors.");
+                }
+                $sender->sendMessage("Server ID: " . $this->getPlugin()->getAuthPayloadSetting('serverId'));
+                $sender->sendMessage("Server URL: " . $this->getPlugin()->getAuthPayloadSetting('serverStore'));
+                $sender->sendMessage("Version: " . $this->getPlugin()->getServer()->getPluginManager()->getPlugin('BuyCraft')->getDescription()->getVersion() . " implementing BuyCraft Bukkit " . Actions::PLUGIN_VERSION);
+                $sender->sendMessage("Website: http://buycraft.net");
+
+            }
+            else{
+                $sender->sendMessage("BuyCraft is not linked to buycraft.net and can't process purchases for you.");
+                $sender->sendMessage("If you are the owner of this server you need to enter your secret key in the config.yml or using /buycraft secret <key>.");
+            }
         }
     }
     public function getPlugin(){

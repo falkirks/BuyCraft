@@ -35,4 +35,7 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
             return false;
         }
     }
+    public function getMainAlias(){
+        return (count($this->getAliases()) > 0 ? end($this->getAliases()) : $this->getName());
+    }
 }
