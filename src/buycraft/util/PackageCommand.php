@@ -22,16 +22,8 @@ class PackageCommand{
         return $this->data["delay"];
     }
     public function getRequiredInventorySlots($p){
-        if($this->data["requireInventorySlot"] )
         if($p instanceof Player){
-            $slots = 0;
-            foreach($p->getInventory()->getContents() as $item){
-                if($item->getID() === Block::AIR){
-                    $slots++;
-                    if($slots == $this->data["requireInventorySlot"]) return 0;
-                }
-            }
-            return $this->data["requireInventorySlot"] - $slots;
+            return $this->data["requireInventorySlot"] - ($p->getInventory()->getSize() - count($p->getInventory()->getContents()));
         }
         else{
             return -1;
@@ -42,5 +34,11 @@ class PackageCommand{
     }
     public function requiresInventorySlots(){
         return $this->data["requireInventorySlot"] > 0;
+    }
+    public function delayTick(){
+        $this->data["delay"]--;
+    }
+    public function setDelay($delay){
+        $this->data["delay"] = $delay;
     }
 }

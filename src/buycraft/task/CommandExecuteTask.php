@@ -21,18 +21,23 @@ class CommandExecuteTask extends ApiTask{
     private $needsInventorySpace = [];
     public function onRun($tick){
         if(count($this->commandQueue) > 0){
-            foreach($this->commandQueue as $command){
-                if($command->requiresInventorySlots()){
-                    if($command->getRequiredInventorySlots($this->getOwner()->getServer()->getPlayerExact($command->getUser())) > 0){
-                        $this->needsInventorySpace[] = $command;
-                        continue;
+            foreach($this->commandQueue as $i => $command){
+                if($command->getDelay() === 0){
+                    if($command->requiresInventorySlots()){
+                        if($command->getRequiredInventorySlots($this->getOwner()->getServer()->getPlayerExact($command->getUser())) > 0){
+                            $this->needsInventorySpace[] = $command;
+                            continue;
+                        }
                     }
+                    $this->getOwner()->getServer()->dispatchCommand($this->getOwner()->getCommandSender(), $command->getReplacedCommand());
+                    $this->getOwner()->getCommandDeleteTask()->deleteCommand($command->getCommandID());
+                    $this->creditedCommands[$command->getUser()] = $command;
+                    unset($this->commandQueue[$i]);
                 }
-                $this->getOwner()->getServer()->dispatchCommand($this->getOwner()->getCommandSender(), $command->getReplacedCommand());
-                $this->getOwner()->getCommandDeleteTask()->deleteCommand($command->getCommandID());
-                $this->creditedCommands[] = $command;
+                else{
+                    $command->delayTick();
+                }
             }
-            $this->commandQueue = [];
         }
         else{
             foreach($this->creditedCommands as $i => $command){
@@ -64,7 +69,12 @@ class CommandExecuteTask extends ApiTask{
             return false;
         }
     }
-    public function isQueued(PackageCommand $command){
-        return in_array($command, $this->commandQueue);
+    public function isQueued($cid){
+        foreach($this->commandQueue as $command){
+            if($command->getCommandID() === $cid){
+                return true;
+            }
+        }
+        return false;
     }
 }
