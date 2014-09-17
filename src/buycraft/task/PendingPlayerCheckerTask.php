@@ -15,7 +15,6 @@ class PendingPlayerCheckerTask extends ApiTask implements Listener{
     /** @var  TaskHandler */
     private $handler;
     public function onRun($tick, $manual = false){
-        var_dump("I run.");
         if($this->getOwner()->getConfig()->get('commandChecker') || $manual){
             $this->data["action"] = Actions::PENDING_PLAYERS;
             $res = $this->send();
