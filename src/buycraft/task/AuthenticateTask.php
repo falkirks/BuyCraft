@@ -28,6 +28,7 @@ class AuthenticateTask extends ApiAsyncTask{
             }
             $main->setAuthenticated();
             $main->setAuthPayload($out["payload"]);
+            $main->getPendingPlayerCheckerTask()->setUpdateInterval($out["payload"]["updateUsernameInterval"]);
         }
         elseif($out["code"] === 101){
             $main->getLogger()->critical("The specified Secret key could not be found.");
