@@ -24,12 +24,18 @@ class CommandFetchTask extends ApiAsyncTask{
         $this->send();
     }
     public function onOutput(BuyCraft $main, Player $player = null){
-        foreach($this->getOutput()["payload"]["commands"] as $cmd){
-            $p = ($cmd["requireOnline"] ? $main->getServer()->getPlayer($cmd["ign"]) : null);
-            $pkg = new PackageCommand($cmd);
-            if(!$cmd["requireOnline"] || $p !== null){
-                $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
+        $out = $this->getOutput();
+        if(isset($out["payload"]["command"])){
+            foreach($this->getOutput()["payload"]["commands"] as $cmd){
+                $p = ($cmd["requireOnline"] ? $main->getServer()->getPlayer($cmd["ign"]) : null);
+                $pkg = new PackageCommand($cmd);
+                if(!$cmd["requireOnline"] || $p !== null){
+                    $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
+                }
             }
+        }
+        else{
+            $main->getLogger()->info("A command fetch failed.");
         }
     }
 }
