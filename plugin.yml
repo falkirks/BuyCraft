@@ -1,6 +1,6 @@
 name: BuyCraft
 main: buycraft\BuyCraft
-version: 0.6
+version: 0.6.1
 author: Falk
 api: [1.0.0]
 load: POSTWORLD
