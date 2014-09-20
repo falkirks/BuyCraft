@@ -31,9 +31,3 @@ This port does not support recent payment signs.
 Listed below are the permission nodes for the plugin:
 
 	buycraft.admin - Enables use of the "/buycraft <reload/forcecheck/secret>" commands
-
-
----- A FURTHER NOTE (This applies to Java Source and API) --------------------------------------------------------
-
-Modifying the source code is allowed. You are not allowed to use the source code in another Bukkit plugin without prior permission.
-Use of http://api.buycraft.net is only for this plugin and integrating Buycraft on to your own website. Any other use is not allowed.
