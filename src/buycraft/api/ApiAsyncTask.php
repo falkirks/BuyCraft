@@ -1,6 +1,8 @@
 <?php
 namespace buycraft\api;
 use buycraft\BuyCraft;
+use pocketmine\command\CommandSender;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\Player;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
@@ -31,6 +33,7 @@ abstract class ApiAsyncTask extends AsyncTask{
         $data["playersOnline"] = count($main->getServer()->getOnlinePlayers());
         $this->data = serialize($data);
         $this->player = $player;
+        $this->main = $main;
         $this->isAuthenticated = $main->isAuthenticated();
         $this->onConfig($main);
     }
@@ -87,7 +90,7 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @param Player $p
      * @return mixed
      */
-    abstract public function onOutput(BuyCraft $main, Player $p = null);
+    abstract public function onOutput(BuyCraft $main, CommandSender $p);
     /**
      * @param BuyCraft $main
      * @return mixed
@@ -106,7 +109,7 @@ abstract class ApiAsyncTask extends AsyncTask{
                 }
             }
             else{
-                $this->onOutput($plugin);
+                $this->onOutput($plugin, new ConsoleCommandSender());
             }
         }
 

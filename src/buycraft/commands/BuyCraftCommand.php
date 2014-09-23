@@ -5,6 +5,7 @@ use buycraft\api\Actions;
 use buycraft\BuyCraft;
 use buycraft\task\AuthenticateTask;
 use buycraft\task\RecentPaymentsTask;
+use buycraft\task\ReloadCategoriesTask;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
@@ -22,9 +23,11 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                 switch($args[0]){
                     case 'reload':
                         if($this->getPlugin()->isAuthenticated()){
-                            $sender->sendMessage("Scheduled authentication. If you don't receive a success message an error will be available on the console.");
+                            $sender->sendMessage("Scheduled authentication and package reload. If you don't get a success message try again.");
                             $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
                             $auth->call();
+                            $fetch = new ReloadCategoriesTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
+                            $fetch->call();
                         }
                         else{
                             $sender->sendMessage("Not authenticated with BuyCraft.net.");

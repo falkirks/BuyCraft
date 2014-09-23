@@ -14,7 +14,36 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
     }
     public function execute(CommandSender $sender, $label, array $args){
         if(!$this->getPlugin()->getConfig()->get('disableBuyCommand')){
-
+            $pageToView = 0;
+            $categoryToView = 0;
+            if(count($args) > 0){
+                if($args[0] == "page" && count($args) == 2 || count($args) == 3){
+                    if(count($args) == 2){
+                        $pageToView = $args[1];
+                    }
+                    else{
+                        $categoryToView = $args[1];
+                        $pageToView = $args[2];
+                    }
+                }
+                else{
+                    if(count($args) == 1 && is_numeric($args[0])){
+                        //TODO show package
+                        return true;
+                    }
+                    else{
+                        $sender->sendMessage($this->getPlugin()->getConfig()->get('invalidBuyCommand'));
+                        return true;
+                    }
+                }
+            }
+            if(is_numeric($pageToView) && is_numeric($categoryToView)){
+                //TODO show category
+            }
+            else{
+                $sender->sendMessage($this->getPlugin()->getConfig()->get('invalidBuyCommand'));
+                return true;
+            }
         }
         else{
             $sender->sendMessage("Buy command is disabled on this server.");

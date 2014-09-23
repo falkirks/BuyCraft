@@ -5,7 +5,7 @@ namespace buycraft\task;
 use buycraft\api\Actions;
 use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
-use pocketmine\Player;
+use pocketmine\command\CommandSender;
 
 class RecentPaymentsTask extends ApiAsyncTask{
     public function onConfig(BuyCraft $plugin){
@@ -17,30 +17,22 @@ class RecentPaymentsTask extends ApiAsyncTask{
     public function onRun(){
         $this->send();
     }
-    public function onOutput(BuyCraft $main, Player $player = null){
+    public function onOutput(BuyCraft $main, CommandSender $sender){
         $data = $this->getData();
         $out = $this->getOutput();
         if(isset($data["ign"])){
-            $this->sendMessage("Displaying recent payments from the user " . $data["ign"] . ":", $player, $main);
+            $sender->sendMessage("Displaying recent payments from the user " . $data["ign"] . ":");
         }
         else{
-            $this->sendMessage("Displaying recent payments over all users: ", $player, $main);
+            $sender->sendMessage("Displaying recent payments over all users: ");
         }
         if($out["payload"] !== null && count($out["payload"]) > 0){
             foreach($this->getOutput()["payload"] as $entry){
-                $this->sendMessage("[" . $entry["humanTime"] . "] " . $entry["ign"] . " (" . $entry["price"] . " " . $entry["currency"] . ")", $player, $main);
+                $sender->sendMessage("[" . $entry["humanTime"] . "] " . $entry["ign"] . " (" . $entry["price"] . " " . $entry["currency"] . ")");
             }
         }
         else{
-            $this->sendMessage("No recent payments to display.", $player, $main);
-        }
-    }
-    public function sendMessage($str, Player $player = null, BuyCraft $main){
-        if($player instanceof Player){
-            $player->sendMessage($str);
-        }
-        else{
-            $main->getLogger()->info($str);
+            $sender->sendMessage("No recent payments to display.");
         }
     }
 }

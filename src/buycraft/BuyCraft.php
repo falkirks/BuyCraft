@@ -3,6 +3,7 @@ namespace buycraft;
 
 use buycraft\commands\BuyCommand;
 use buycraft\commands\BuyCraftCommand;
+use buycraft\packages\PackageManager;
 use buycraft\task\AuthenticateTask;
 use buycraft\task\CommandDeleteTask;
 use buycraft\task\CommandExecuteTask;
@@ -24,6 +25,8 @@ class BuyCraft extends PluginBase{
     private $buyCommand;
     /** @var  BuycraftCommandSender */
     private $commandSender;
+    /** @var  PackageManager */
+    private $packageManager;
     /** @var array  */
     private $authPayload = [];
     public function onEnable(){
@@ -46,8 +49,11 @@ class BuyCraft extends PluginBase{
         $this->pendingPlayerCheckerTask->call();
         $this->commandDeleteTask->call();
 
+        $this->packageManager = new PackageManager($this);
+
         $this->buyCommand = new BuyCommand($this);
         $this->buycraftCommand = new BuyCraftCommand($this);
+
         $this->getServer()->getCommandMap()->register("buycraft", $this->buycraftCommand);
         $this->getServer()->getCommandMap()->register("buycraft", $this->buyCommand);
     }
@@ -94,6 +100,14 @@ class BuyCraft extends PluginBase{
     public function getCommandSender(){
         return $this->commandSender;
     }
+
+    /**
+     * @return PackageManager
+     */
+    public function getPackageManager(){
+        return $this->packageManager;
+    }
+
     /**
      * @return bool
      */

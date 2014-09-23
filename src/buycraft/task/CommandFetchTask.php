@@ -5,7 +5,8 @@ use buycraft\api\Actions;
 use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
 use buycraft\util\PackageCommand;
-use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
 /*
  * Fetches commands from buycraft and adds them to the execution queue.
  */
@@ -23,12 +24,11 @@ class CommandFetchTask extends ApiAsyncTask{
     public function onRun(){
         $this->send();
     }
-    public function onOutput(BuyCraft $main, Player $player = null){
+    public function onOutput(BuyCraft $main, CommandSender $sender){
         $out = $this->getOutput();
         if(isset($out["payload"]["commands"])){
             foreach($this->getOutput()["payload"]["commands"] as $cmd){
                 $p = ($cmd["requireOnline"] ? $main->getServer()->getPlayer($cmd["ign"]) : null);
-                $pkg = new PackageCommand($cmd);
                 if(!$cmd["requireOnline"] || $p !== null){
                     $main->getCommandExecuteTask()->queueCommand(new PackageCommand($cmd));
                 }

@@ -4,7 +4,7 @@ namespace buycraft\task;
 use buycraft\api\Actions;
 use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
-use pocketmine\Player;
+use pocketmine\command\CommandSender;
 
 class AuthenticateTask extends ApiAsyncTask{
     public function onConfig(BuyCraft $main){
@@ -19,23 +19,22 @@ class AuthenticateTask extends ApiAsyncTask{
     public function onRun(){
         $this->send();
     }
-    public function onOutput(BuyCraft $main, Player $player = null){
+    public function onOutput(BuyCraft $main, CommandSender $sender){
         $out = $this->getOutput(); //Limit unserialize() calls
         if($out["code"] === 0){
-            $main->getLogger()->info("Connected to BuyCraft!");
-            if($player instanceof Player){
-                $player->sendMessage("BuyCraft authentication complete.");
-            }
+            $sender->sendMessage("BuyCraft authentication complete.");
             $main->setAuthenticated();
             $main->setAuthPayload($out["payload"]);
+            $fetch = new ReloadCategoriesTask($main);
+            $fetch->call();
             $main->getPendingPlayerCheckerTask()->setUpdateInterval($out["payload"]["updateUsernameInterval"]);
         }
         elseif($out["code"] === 101){
-            $main->getLogger()->critical("The specified Secret key could not be found.");
+            $sender->sendMessage("The specified Secret key could not be found.");
             $main->setUnAuthenticated();
         }
         else{
-            $main->getLogger()->critical("An error occured during authentication.");
+            $sender->sendMessage("An error occured during authentication.");
             $main->setUnAuthenticated();
         }
     }

@@ -5,7 +5,8 @@ namespace buycraft\task;
 use buycraft\api\Actions;
 use buycraft\api\ApiAsyncTask;
 use buycraft\BuyCraft;
-use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
 /*
  * This is an Async task which allows PendingPlayerCheckerTask to
  * send requests outside the main thread.
@@ -19,7 +20,7 @@ class PendingUsersTask extends ApiAsyncTask{
     public function onRun(){
         $this->send();
     }
-    public function onOutput(BuyCraft $main, Player $player = null){
+    public function onOutput(BuyCraft $main, CommandSender $sender){
         $res = $this->getOutput();
         if($res !== false && is_array($res["payload"]["pendingPlayers"])){
             $playersToFetch = [];
