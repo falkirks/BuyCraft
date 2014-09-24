@@ -26,8 +26,6 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                             $sender->sendMessage("Scheduled authentication and package reload. If you don't get a success message try again.");
                             $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
                             $auth->call();
-                            $fetch = new ReloadCategoriesTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
-                            $fetch->call();
                         }
                         else{
                             $sender->sendMessage("Not authenticated with BuyCraft.net.");

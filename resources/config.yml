@@ -25,6 +25,10 @@ debug: false
 commandThrottleCount: 150
 # Prevent setting of secret
 disable-secret-command: false
+# Point players to directly to payment screen
+directPay: false
+# Amount of packages to show per page
+packagePageSize: 5
 
 #  _
 # | |

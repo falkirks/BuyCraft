@@ -12,16 +12,18 @@ class PackageManager{
         $this->main = $main;
         $this->categories = [];
         $this->packages = [];
+        $this->pageSize = $this->main->getConfig()->get('packagePageSize');
     }
     public function addCategory($id, $name, $desc, $item){
-        $this->categories[$id] = new Category($id, $name, $desc, $item);
+        $this->categories[] = new Category($id, $name, $desc, $item, count($this->categories));
     }
     public function addPackage($categoryId, $id, $item, $name, $desc, $price){
-        if(isset($this->categories[$categoryId])){
-            $this->packages[$id] = new Package($id, $name, $desc, $price, $item, $this->categories[$categoryId]);
+        $category = $this->getCategoryById($categoryId);
+        if($category instanceof Category){
+            $this->packages[] = new Package($id, $name, $desc, $price, $item, $category);
         }
         else{
-            $this->packages[$id] = new Package($id, $name, $desc, $price, $item);
+            $this->packages[] = new Package($id, $name, $desc, $price, $item);
         }
     }
     public function cleanCategories(){
@@ -30,18 +32,42 @@ class PackageManager{
                 unset($this->categories[$i]);
             }
         }
+        foreach($this->packages as $i => $p){
+            $p->setNiceId($i);
+        }
     }
     public function getCategories(){
         return $this->categories;
     }
-    public function getCategory($id){
-        return $this->categories[$id];
+    public function getCategory($niceId){
+        return (isset($this->categories[$niceId]) ? $this->categories[$niceId] : false);
+    }
+    public function getCategoryById($id){
+        foreach($this->getCategories() as $category){
+            if($category->getId() === $id){
+                return $category;
+            }
+        }
+        return false;
     }
     public function getPackages(){
         return $this->packages;
     }
-    public function getPackage($id){
-        return $this->packages[$id];
+    public function getPackage($niceId){
+        return (isset($this->packages[$niceId]) ? $this->packages[$niceId] : false);
+    }
+    public function getPage($page = 0, $category = 0){
+        $start = $page * $this->pageSize;
+        if($category === false){
+            $outArray = array_slice($this->getPackages(), $start, $this->pageSize);
+        }
+        elseif($this->getCategory($category) instanceof Category){
+            $outArray = array_slice($this->getCategory($category)->getPackages(), $start, $this->pageSize);
+        }
+        else{
+            $outArray = false;
+        }
+        return $outArray;
     }
     public function reset(){
         $this->categories = [];

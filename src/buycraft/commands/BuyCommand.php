@@ -2,9 +2,11 @@
 namespace buycraft\commands;
 
 use buycraft\BuyCraft;
+use buycraft\task\VisitLinkTask;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
+use pocketmine\Player;
 
 class BuyCommand extends Command implements PluginIdentifiableCommand{
     private $main;
@@ -15,7 +17,7 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
     public function execute(CommandSender $sender, $label, array $args){
         if(!$this->getPlugin()->getConfig()->get('disableBuyCommand')){
             $pageToView = 0;
-            $categoryToView = 0;
+            $categoryToView = false;
             if(count($args) > 0){
                 if($args[0] == "page" && count($args) == 2 || count($args) == 3){
                     if(count($args) == 2){
@@ -28,7 +30,20 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
                 }
                 else{
                     if(count($args) == 1 && is_numeric($args[0])){
-                        //TODO show package
+                        $package = $this->getPlugin()->getPackageManager()->getPackage($args[0]);
+                        if($package !== false){
+                            if($this->getPlugin()->getConfig()->get('directPay')){
+                                $link = $this->getPlugin()->getAuthPayloadSetting('serverStore') . "/checkout/packages?popup=true&action=add&direct=true&package=" . $package->getId() . "&ign=" . $sender->getName();
+                            }
+                            else{
+                                $link = $this->getPlugin()->getAuthPayloadSetting('serverStore') . "/checkout/packages?action=add&package=" . $package->getId() . "&ign=" . $sender->getName();
+                            }
+                            $linkTask = new VisitLinkTask($this->getPlugin(), ['url' => $link], ($sender instanceof Player ? $sender->getName() : false));
+                            $linkTask->call();
+                        }
+                        else{
+                            $sender->sendMessage($this->getPlugin()->getConfig()->get('packageNotFound'));
+                        }
                         return true;
                     }
                     else{
@@ -37,12 +52,27 @@ class BuyCommand extends Command implements PluginIdentifiableCommand{
                     }
                 }
             }
-            if(is_numeric($pageToView) && is_numeric($categoryToView)){
-                //TODO show category
+            if(is_numeric($pageToView) && is_numeric($categoryToView) || $categoryToView === false){
+                $packages = $this->getPlugin()->getPackageManager()->getPage($pageToView, $categoryToView);
+                if($packages !== false){
+                    if(count($packages) > 0){
+                        foreach($packages as $package){
+                            $sender->sendMessage($this->getPlugin()->getConfig()->get('packageId') . ": " . $package->getNiceId());
+                            $sender->sendMessage($this->getPlugin()->getConfig()->get('packageName') . ": " . $package->getName());
+                            $sender->sendMessage($this->getPlugin()->getConfig()->get('packagePrice') . ": " . $package->getPrice() . ' ' . $this->getPlugin()->getAuthPayloadSetting('serverCurrency'));
+                            $sender->sendMessage("--------");
+                        }
+                    }
+                    else{
+                        $sender->sendMessage($this->getPlugin()->getConfig()->get('pageNotFound'));
+                    }
+                }
+                else{
+                    $sender->sendMessage($this->getPlugin()->getConfig()->get('noPackagesForSale'));
+                }
             }
             else{
                 $sender->sendMessage($this->getPlugin()->getConfig()->get('invalidBuyCommand'));
-                return true;
             }
         }
         else{

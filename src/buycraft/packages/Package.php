@@ -8,6 +8,7 @@ class Package{
     private $name;
     private $desc;
     private $price;
+    private $niceId;
 
     public function __construct($id, $name, $desc, $price, $item, Category $c = null){
         $this->category = $c;
@@ -19,6 +20,20 @@ class Package{
         if($this->category !== null){
             $this->category->addPackage($this);
         }
+    }
+
+    /**
+     * @param mixed $niceId
+     */
+    public function setNiceId($niceId){
+        $this->niceId = $niceId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNiceId(){
+        return $this->niceId;
     }
 
     /**

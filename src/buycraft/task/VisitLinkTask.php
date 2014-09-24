@@ -17,7 +17,7 @@ class VisitLinkTask extends ApiAsyncTask{
         $this->send();
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
-        $out = $this->getData();
+        $out = $this->getOutput()['payload'];
         if($out !== null && $out !== false){
             if(isset($out['url']) && $out['url'] !== null){
                 $sender->sendMessage($main->getConfig()->get('pleaseVisit') . ": " . $out['url']);
