@@ -33,7 +33,6 @@ abstract class ApiAsyncTask extends AsyncTask{
         $data["playersOnline"] = count($main->getServer()->getOnlinePlayers());
         $this->data = serialize($data);
         $this->player = $player;
-        $this->main = $main;
         $this->isAuthenticated = $main->isAuthenticated();
         $this->onConfig($main);
     }
