@@ -46,8 +46,8 @@ class BuyCraftCommand extends Command implements PluginIdentifiableCommand{
                                 $this->getPlugin()->getConfig()->set('secret', $args[1]);
                                 $this->getPlugin()->getConfig()->save();
                                 $sender->sendMessage("Scheduled authentication. If you don't receive a success message an error will be available on the console.");
-                                $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender : false));
-                                $auth->call();
+                                $auth = new AuthenticateTask($this->getPlugin(), [], ($sender instanceof Player ? $sender->getName() : false));
+                                $this->getPlugin()->getServer()->getScheduler()->scheduleAsyncTask($auth);
                             }
                             else{
                                 $sender->sendMessage("You must specify the secret to set.");

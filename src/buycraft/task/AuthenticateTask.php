@@ -16,8 +16,7 @@ class AuthenticateTask extends ApiAsyncTask{
         $data["version"] = Actions::PLUGIN_VERSION;
         $this->setData($data);
     }
-    public function onRun(){
-        $this->send();
+    public function onProcess(){
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
         $out = $this->getOutput(); //Limit unserialize() calls

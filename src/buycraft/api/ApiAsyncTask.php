@@ -1,5 +1,6 @@
 <?php
 namespace buycraft\api;
+
 use buycraft\BuyCraft;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
@@ -34,6 +35,7 @@ abstract class ApiAsyncTask extends AsyncTask{
         $this->data = serialize($data);
         $this->player = $player;
         $this->isAuthenticated = $main->isAuthenticated();
+        $this->autoloader = clone $main->getServer()->getLoader();
         $this->onConfig($main);
     }
     /**
@@ -58,9 +60,6 @@ abstract class ApiAsyncTask extends AsyncTask{
     }
     /*
      * This function is called from a task and can't interact with the API.
-     */
-    /**
-     *
      */
     public function send(){
         $data = $this->getData();
@@ -95,12 +94,18 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @return mixed
      */
     abstract public function onConfig(BuyCraft $main);
+    abstract public function onProcess();
+    public function onRun(){
+        $this->autoloader->register(true);
+        $this->send();
+        $this->onProcess();
+    }
     /**
      * @param Server $server
      */
     public function onCompletion(Server $server){
         $plugin = $server->getPluginManager()->getPlugin("BuyCraft");
-        if($plugin != null && $plugin->isEnabled() && $plugin instanceof BuyCraft){
+        if($plugin instanceof BuyCraft && $plugin->isEnabled()){
             if($this->player !== false){
                 $player = $server->getPlayerExact($this->player);
                 if($player !== null && $player->isOnline()){

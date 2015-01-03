@@ -14,8 +14,8 @@ class RecentPaymentsTask extends ApiAsyncTask{
         if(!isset($data["limit"])) $data["limit"] = 10;
         $this->setData($data);
     }
-    public function onRun(){
-        $this->send();
+    public function onProcess(){
+
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
         $data = $this->getData();

@@ -17,8 +17,8 @@ class PendingUsersTask extends ApiAsyncTask{
         $data["action"] = Actions::PENDING_PLAYERS;
         $this->setData($data);
     }
-    public function onRun(){
-        $this->send();
+    public function onProcess(){
+
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
         $res = $this->getOutput();

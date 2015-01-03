@@ -21,8 +21,8 @@ class CommandFetchTask extends ApiAsyncTask{
         $data["offlineCommandLimit"] = $plugin->getConfig()->get('commandThrottleCount');
         $this->setData($data);
     }
-    public function onRun(){
-        $this->send();
+    public function onProcess(){
+
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
         $out = $this->getOutput();

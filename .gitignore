@@ -1,4 +1,3 @@
-# PHPStorm
-.idea/*
-# BuyCraft bukkit source
-bukkit/*
+.idea
+bukkit
+out

@@ -13,8 +13,8 @@ class ReloadPackagesTask extends ApiAsyncTask{
         $data['action'] = Actions::PACKAGES;
         $this->setData($data);
     }
-    public function onRun(){
-        $this->send();
+    public function onProcess(){
+
     }
     public function onOutput(BuyCraft $main, CommandSender $sender){
         $out = $this->getOutput();
