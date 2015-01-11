@@ -1,6 +1,6 @@
 <?php
 if(extension_loaded('phar')){
-    $phar = new \Phar(__FILE__);
+    $phar = new \Phar(__DIR__);
     date_default_timezone_set("UTC");
     echo "Checking for updates...\n";;
     $ch = curl_init("https://api.github.com/repos/" . $phar->getMetaData()["authors"][0] . "/" . $phar->getMetaData()["name"] . "/releases");
