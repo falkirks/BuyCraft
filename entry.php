@@ -33,14 +33,14 @@ if(extension_loaded('phar')){
             curl_exec($ch);
             curl_close($ch);
             fclose($fp);
-            if($ret[0]["assets"][0]["name"] == basename(__FILE__)){
+            if($ret[0]["assets"][0]["name"] == basename(__DIR__)){
                 echo "[!] Download complete. The new phar has replaced the old one.\n";
                 echo "[!] Hope you enjoy the new version :)\n";
             }
             else{
                 echo "[?] Download complete. Would you like to delete me?";
                 if(trim(fgets(STDIN)) == "y") {
-                    unlink(__FILE__);
+                    unlink(__DIR__);
                     echo "[!] Ouch! That's me cleaned up. Hope you enjoy the newer version :)\n";
                 }
                 else{
