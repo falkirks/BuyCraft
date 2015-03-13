@@ -1,6 +1,6 @@
 BuyCraft (port for PocketMine-MP)
 ===========
-This port includes all the functionality from BuyCraft for bukkit (excluding signs and GUI). The /buy command is not currently implemented but will be finished at a later date.
+This port includes all the functionality from BuyCraft for bukkit (excluding signs and GUI).
 
 
 ###BuyCraft TOS Compliance
