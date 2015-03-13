@@ -2,6 +2,7 @@
 namespace buycraft\api;
 
 use buycraft\BuyCraft;
+use buycraft\util\HTTPUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\Player;
@@ -64,7 +65,7 @@ abstract class ApiAsyncTask extends AsyncTask{
     public function send(){
         $data = $this->getData();
         if($this->isAuthenticated || $data["action"] === Actions::AUTHENTICATE){
-            $this->output = serialize(json_decode(Utils::getURL($this->apiUrl . "?" . http_build_query($data)), true));
+            $this->output = serialize(json_decode(HTTPUtils::getURL($this->apiUrl . "?" . http_build_query($data)), true));
         }
         else{
             $this->output = false;
