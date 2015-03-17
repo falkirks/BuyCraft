@@ -3,6 +3,7 @@ namespace buycraft\task;
 
 use buycraft\api\Actions;
 use buycraft\api\ApiTask;
+use buycraft\util\DebugUtils;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\scheduler\PluginTask;
@@ -16,12 +17,14 @@ class PendingPlayerCheckerTask extends PluginTask implements Listener{
     /** @var  TaskHandler */
     private $handler;
     public function onRun($tick, $manual = false){
+        DebugUtils::taskCalled($this);
         if($this->getOwner()->getConfig()->get('commandChecker') || $manual){
             $task = new PendingUsersTask($this->getOwner());
             $task->call();
         }
     }
     public function call(){
+        DebugUtils::taskRegistered($this);
         $this->getOwner()->getServer()->getPluginManager()->registerEvents($this, $this->getOwner());
         $this->handler = $this->getOwner()->getServer()->getScheduler()->scheduleRepeatingTask($this, 40);
     }

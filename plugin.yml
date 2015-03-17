@@ -1,6 +1,6 @@
 name: BuyCraft
 main: buycraft\BuyCraft
-version: 1.2
+version: 1.2.1
 author: Falkirks
 api: [1.0.0]
 load: POSTWORLD

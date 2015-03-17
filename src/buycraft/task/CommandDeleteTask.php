@@ -10,10 +10,12 @@ namespace buycraft\task;
 
 use buycraft\api\Actions;
 use buycraft\api\ApiTask;
+use buycraft\util\DebugUtils;
 
 class CommandDeleteTask extends ApiTask{
     private $deleteQueue = [];
     public function onRun($tick){
+        DebugUtils::taskCalled($this);
         if(count($this->deleteQueue) > 0){
             $this->data["commands"] = json_encode($this->deleteQueue);
             $this->send();
@@ -21,6 +23,7 @@ class CommandDeleteTask extends ApiTask{
         }
     }
     public function call(){
+        DebugUtils::taskRegistered($this);
         $this->data["action"] = Actions::COMMANDS;
         $this->data["do"] = Actions::DO_REMOVE;
         $this->getScheduler()->scheduleRepeatingTask($this, 20);

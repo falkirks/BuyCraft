@@ -12,6 +12,11 @@ use buycraft\util\BuycraftCommandSender;
 use pocketmine\plugin\PluginBase;
 
 class BuyCraft extends PluginBase{
+    /*
+     * If you want to turn debugging on set this to true.
+     */
+    const IS_DEBUGGING = false;
+
     private $isAuthenticated = false;
     /** @var  CommandExecuteTask */
     private $commandExecuteTask;
@@ -34,13 +39,6 @@ class BuyCraft extends PluginBase{
         $this->saveResource("README.md");
         $this->getConfig(); //Fetch the config so no blocking later
 
-        if($this->getConfig()->get('secret') !== ""){
-            $auth = new AuthenticateTask($this);
-            $auth->call();
-        }
-        else{
-            $this->getLogger()->info("You still need to configure BuyCraft. Use /buycraft secret or the config.yml to set your secret.");
-        }
         $this->commandSender = new BuycraftCommandSender;
         $this->commandExecuteTask = new CommandExecuteTask($this);
         $this->pendingPlayerCheckerTask = new PendingPlayerCheckerTask($this);
@@ -56,6 +54,14 @@ class BuyCraft extends PluginBase{
 
         $this->getServer()->getCommandMap()->register("buycraft", $this->buycraftCommand);
         $this->getServer()->getCommandMap()->register("buycraft", $this->buyCommand);
+
+        if($this->getConfig()->get('secret') !== ""){
+            $auth = new AuthenticateTask($this);
+            $auth->call();
+        }
+        else{
+            $this->getLogger()->info("You still need to configure BuyCraft. Use /buycraft secret or the config.yml to set your secret.");
+        }
     }
     public function onDisable(){
         $this->commandDeleteTask->onRun(0);

@@ -2,6 +2,7 @@
 namespace buycraft\api;
 
 use buycraft\BuyCraft;
+use buycraft\util\DebugUtils;
 use buycraft\util\HTTPUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
@@ -25,6 +26,7 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @param bool $player
      */
     public function __construct(BuyCraft $main, $data = [], $player = false){
+        DebugUtils::construct($this);
         if($main->getConfig()->get("https")){
             $this->apiUrl = "https://api.buycraft.net/v4";
         }
@@ -36,7 +38,7 @@ abstract class ApiAsyncTask extends AsyncTask{
         $this->data = serialize($data);
         $this->player = $player;
         $this->isAuthenticated = $main->isAuthenticated();
-        $this->autoloader = clone $main->getServer()->getLoader();
+        $this->autoloader = unserialize(serialize($main->getServer()->getLoader())); //TODO improve this
         $this->onConfig($main);
     }
     /**
@@ -65,7 +67,9 @@ abstract class ApiAsyncTask extends AsyncTask{
     public function send(){
         $data = $this->getData();
         if($this->isAuthenticated || $data["action"] === Actions::AUTHENTICATE){
-            $this->output = serialize(json_decode(HTTPUtils::getURL($this->apiUrl . "?" . http_build_query($data)), true));
+            $url = $this->apiUrl . "?" . http_build_query($data);
+            DebugUtils::requestOut($this, $url);
+            $this->output = serialize(json_decode(HTTPUtils::getURL($url), true));
         }
         else{
             $this->output = false;
@@ -82,6 +86,7 @@ abstract class ApiAsyncTask extends AsyncTask{
      *
      */
     public function call(){
+        DebugUtils::taskRegistered($this);
         $this->getScheduler()->scheduleAsyncTask($this);
     }
     /**
@@ -97,6 +102,7 @@ abstract class ApiAsyncTask extends AsyncTask{
     abstract public function onConfig(BuyCraft $main);
     abstract public function onProcess();
     public function onRun(){
+        DebugUtils::taskCalled($this);
         $this->autoloader->register(true);
         $this->send();
         $this->onProcess();
@@ -105,6 +111,7 @@ abstract class ApiAsyncTask extends AsyncTask{
      * @param Server $server
      */
     public function onCompletion(Server $server){
+        DebugUtils::taskComplete($this);
         $plugin = $server->getPluginManager()->getPlugin("BuyCraft");
         if($plugin instanceof BuyCraft && $plugin->isEnabled()){
             if($this->player !== false){
